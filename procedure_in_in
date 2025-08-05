@@ -1,0 +1,26 @@
+TASK: Update dept_id in employyes table based on the emp_id
+
+
+CREATE OR REPLACE PROCEDURE update_dept(
+  p_emp_id       IN NUMBER,
+  p_new_dept_id  IN NUMBER
+)
+AS
+BEGIN
+  UPDATE employees
+  SET dept_id = p_new_dept_id
+  WHERE employee_id = p_emp_id;
+
+  -- Optional: confirm update
+  DBMS_OUTPUT.PUT_LINE('Department updated for Employee ID: ' || p_emp_id);
+END;
+/
+
+
+
+--TO run the procedure
+
+BEGIN
+  update_dept(101, 20);
+END;
+/
