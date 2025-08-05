@@ -1,0 +1,29 @@
+TASK :
+
+Write a procedure to give bonus to all employees of a department.
+ Update salary by 10% for all employees of a specific department.
+
+
+CREATE OR REPLACE PROCEDURE employee_bonus(
+  p_dept_id IN NUMBER,
+  p_bonus   IN NUMBER
+) AS
+BEGIN
+  UPDATE employees
+  SET salary = salary + (salary * p_bonus / 100)
+  WHERE dept_id = p_dept_id;
+
+  DBMS_OUTPUT.PUT_LINE('Bonus given to employees in department ' || p_dept_id);
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END;
+/
+
+
+--To call the procedure
+
+BEGIN
+  employee_bonus(10, 10);  -- Gives 10% bonus to department 10 employees
+END;
+/
