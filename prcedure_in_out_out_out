@@ -1,0 +1,41 @@
+TASK : Write a procedure and return HRA, DA, and gross salary for an employee using multiple OUT parameters.
+(Use IN OUT parameters if needed)
+
+
+CREATE OR REPLACE PROCEDURE calc_salary_components (
+    p_emp_id      IN  NUMBER,
+    p_hra         OUT NUMBER,
+    p_da          OUT NUMBER,
+    p_gross_sal   OUT NUMBER
+) AS
+    v_basic_sal   NUMBER;
+BEGIN
+    -- Fetch employee's basic salary
+    SELECT salary INTO v_basic_sal
+    FROM employees
+    WHERE employee_id = p_emp_id;
+
+    -- Calculate HRA and DA
+    p_hra       := v_basic_sal * 0.20;  -- 20% of salary
+    p_da        := v_basic_sal * 0.30;  -- 30% of salary
+    p_gross_sal := v_basic_sal + p_hra + p_da;
+END;
+/
+
+
+--To call the procedure
+
+DECLARE
+  v_hra        NUMBER;
+  v_da         NUMBER;
+  v_gross      NUMBER;
+BEGIN
+  calc_salary_components(101, v_hra, v_da, v_gross);
+
+  DBMS_OUTPUT.PUT_LINE('HRA: ' || v_hra);
+  DBMS_OUTPUT.PUT_LINE('DA: ' || v_da);
+  DBMS_OUTPUT.PUT_LINE('Gross Salary: ' || v_gross);
+END;
+/
+
+  
