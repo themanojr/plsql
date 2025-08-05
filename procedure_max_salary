@@ -1,0 +1,20 @@
+
+TASK: Write a function to return the maximum salary in the company.
+
+CREATE OR REPLACE FUNCTION get_max_salary 
+RETURN NUMBER
+AS 
+  v_max_salary NUMBER;
+BEGIN
+  SELECT MAX(salary) 
+  INTO v_max_salary
+  FROM employees;
+
+  RETURN v_max_salary;
+END;
+/
+
+
+--To call the function
+
+SELECT get_max_salary AS max_salary FROM dual;
