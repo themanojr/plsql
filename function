@@ -1,0 +1,38 @@
+TASK:
+
+Write a function that takes a salary as input and returns a grade:
+
+Salary < 5000 → 'C'
+
+5000 to 10000 → 'B'
+
+Salary > 10000 → 'A'
+
+
+CREATE OR REPLACE FUNCTION employee_grade(v_sal IN NUMBER) 
+RETURN VARCHAR2 
+AS
+  v_grade VARCHAR2(1);
+BEGIN
+  IF v_sal < 5000 THEN
+    v_grade := 'C';
+  ELSIF v_sal BETWEEN 5000 AND 10000 THEN
+    v_grade := 'B';
+  ELSE
+    v_grade := 'A';
+  END IF;
+
+  RETURN v_grade;
+END;
+
+
+--TO run the function
+
+-- Test 1
+SELECT employee_grade(3000) FROM dual; -- Output: C
+
+-- Test 2
+SELECT employee_grade(7500) FROM dual; -- Output: B
+
+-- Test 3
+SELECT employee_grade(12000) FROM dual; -- Output: A
