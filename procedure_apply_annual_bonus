@@ -1,0 +1,46 @@
+Write a procedure named apply_annual_bonus that increases salary by 15% for all employees in a department if their performance_rating is 4 or above.
+
+Input Parameter:
+
+p_dept_id IN NUMBER
+
+Additional Requirements:
+
+Log all updated records (employee_id, old_salary, new_salary, updated_on) in a table bonus_log
+
+
+CREATE OR REPLACE PROCEDURE apply_annual_bonus(p_dept_id IN NUMBER)
+IS
+  CURSOR emp_cur IS
+    SELECT employee_id, salary
+    FROM employees
+    WHERE dept_id = p_dept_id AND performance_rating >= 4;
+
+  v_emp_id      employees.employee_id%TYPE;
+  v_old_salary  employees.salary%TYPE;
+  v_new_salary  employees.salary%TYPE;
+BEGIN
+  FOR emp_rec IN emp_cur LOOP
+    v_emp_id := emp_rec.employee_id;
+    v_old_salary := emp_rec.salary;
+    v_new_salary := v_old_salary + (v_old_salary * 0.15);
+
+    -- Update salary
+    UPDATE employees
+    SET salary = v_new_salary
+    WHERE employee_id = v_emp_id;
+
+    -- Log the bonus update
+    INSERT INTO bonus_log(employee_id, old_salary, new_salary, updated_on)
+    VALUES (v_emp_id, v_old_salary, v_new_salary, SYSDATE);
+  END LOOP;
+END;
+/
+
+
+--To call the procedure
+
+EXEC apply_annual_bonus(10);
+
+--This will update all employees in department 10 who have a performance rating of 4 or more and will log their bonus details.
+
