@@ -1,0 +1,28 @@
+TASK: Write a procedure to count employees in each department using a cursor.
+Loop through departments, count employees, and print using DBMS_OUTPUT.
+
+CREATE OR REPLACE PROCEDURE count_employees_per_dept IS
+  CURSOR dept_cursor IS
+    SELECT DISTINCT dept_id FROM employees;
+
+  v_dept_id   employees.dept_id%TYPE;
+  v_emp_count NUMBER;
+BEGIN
+  FOR dept_rec IN dept_cursor LOOP
+    v_dept_id := dept_rec.dept_id;
+
+    SELECT COUNT(*)
+    INTO v_emp_count
+    FROM employees
+    WHERE dept_id = v_dept_id;
+
+    DBMS_OUTPUT.PUT_LINE('Department ' || v_dept_id || ' has ' || v_emp_count || ' employees.');
+  END LOOP;
+END;
+/
+
+--To call the procedure
+
+BEGIN
+  count_employees_per_dept;
+END;
