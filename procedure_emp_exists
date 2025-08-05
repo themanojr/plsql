@@ -1,0 +1,40 @@
+TASK: Create a function to check if employee exists (Returns TRUE/FALSE).
+
+CREATE OR REPLACE FUNCTION emp_exists(p_emp_id NUMBER) 
+RETURN BOOLEAN 
+IS
+  v_dummy NUMBER;
+BEGIN
+  SELECT 1 INTO v_dummy
+  FROM employees
+  WHERE employee_id = p_emp_id;
+
+  RETURN TRUE;
+
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    RETURN FALSE;
+  WHEN OTHERS THEN
+    RETURN FALSE;  -- Optional: catch-all for any other error
+END;
+/
+
+
+--To call the function
+
+select emp_exists(101) as employee_exists from dual;
+
+or
+
+DECLARE
+  v_result BOOLEAN;
+BEGIN
+  v_result := emp_exists(101);
+
+  IF v_result THEN
+    DBMS_OUTPUT.PUT_LINE('Employee exists.');
+  ELSE
+    DBMS_OUTPUT.PUT_LINE('Employee does not exist.');
+  END IF;
+END;
+/
